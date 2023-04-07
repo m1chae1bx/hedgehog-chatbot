@@ -16,7 +16,7 @@ from config import (
     TOP_P,
     DO_SAMPLE,
 )
-from database import sqlite_connection, fetch_article_title, fetch_article_split_text
+from database import sqlite_connection, fetch_article, fetch_article_split_text
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.docstore.document import Document
@@ -171,7 +171,11 @@ class Chatbot:
             synthesized_knowledge = ""
 
             for article_id in article_ids:
-                synthesized_knowledge += f"\nTitle: {fetch_article_title(article_id, c)}\n"
+                title, date_published = fetch_article(article_id, c)
+
+                synthesized_knowledge += f"\nTitle: {title}"
+                synthesized_knowledge += f"\nDate published: {date_published}\n"
+
                 for _, text in articles[article_id]:
                     synthesized_knowledge += f"{text}\n"
 

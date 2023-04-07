@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # Path to the pre-trained seq2seq model used for generating responses.
 MODEL_PATH = "models/microsoft/GODEL-v1_1-large-seq2seq"
 
@@ -12,8 +14,8 @@ SQLITE_DB_PATH = "data/processed/sqlite_db/articles.db"
 
 # Instruction string for the chatbot model.
 INSTRUCTION = (
-    "Instruction: Given a dialog context and related knowledge, you need to response safely based "
-    "on the knowledge."
+    "Instruction: Given a dialog context and related news articles, you need to response based "
+    f"on the articles. Today is {datetime.now().date()}."
 )
 
 # Starting dialog for the chatbot.
