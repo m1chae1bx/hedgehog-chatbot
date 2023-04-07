@@ -45,7 +45,7 @@ The `sentence-transformers/all-MiniLM-L6-v2` model is a transformer-based model 
 
 ## Setup
 
-Before running the chatbot, you need to install the dependencies by running `pip install -r requirements.txt` on your preferred Python environment. In addition, make sure you have a capable machine when running the chatbot, as the model is quite large. The `microsoft/GODEL-v1_1-large-seq2seq` model alone is at least 3 GB in size.
+Before running the chatbot, you need to install the dependencies by running `pip install -r requirements-<os>.txt` on your preferred Python environment. In addition, make sure you have a capable machine when running the chatbot, as the model is quite large. The `microsoft/GODEL-v1_1-large-seq2seq` model alone is at least 3 GB in size.
 
 Make sure to download the models before running the chatbot. To download the models, you can run the scripts in the `scripts/models` directory.
 
