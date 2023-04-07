@@ -6,12 +6,12 @@ import functools
 
 @contextmanager
 def sqlite_connection():
-    with sqlite3.connect(SQLITE_DB_PATH) as conn:
-        c = conn.cursor()
-        try:
-            yield c
-        finally:
-            conn.close()
+    conn = sqlite3.connect(SQLITE_DB_PATH)
+    c = conn.cursor()
+    try:
+        yield c
+    finally:
+        conn.close()
 
 
 @functools.lru_cache(maxsize=10)
