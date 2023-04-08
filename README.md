@@ -1,4 +1,4 @@
-# Hedgehog: A Transformer-Based Chatbot With Financial Information Retrieval
+# Hedgehog: A Financial News Chatbot Powered by Transformers and Semantic Search
 
 Hedgehog is a chatbot focused on answering questions about financial news. It uses a transformer-based model to generate responses by drawing from relevant news articles in its knowledge base. When a user asks a question, the chatbot searches for applicable news sources and crafts a response based on the information found.
 
