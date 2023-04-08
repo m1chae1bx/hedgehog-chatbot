@@ -2,21 +2,19 @@
 
 Hedgehog is a chatbot focused on answering questions about financial news. It uses a transformer-based model to generate responses by drawing from relevant news articles in its knowledge base. When a user asks a question, the chatbot searches for applicable news sources and crafts a response based on the information found.
 
-## Scope
+## Motivation
 
-The scope of the Hedgehog project is to provide users with accurate and relevant answers to their financial news questions. The chatbot relies on its transformer-based model and a knowledge base of news articles to generate responses. The main focus is on handling financial news inquiries; however, the underlying architecture and design principles can be extended to support other domains in the future.
+Hedgehog is an experimental project aimed at evaluating the effectiveness of augmenting a semantic search-based information retrieval system with a smaller transformer model fine-tuned for answering user queries. The experiment seeks to determine if this combination can create a decent information retrieval chatbot despite the reduced size of the transformer model compared to bleeding-edge large language models like GPT-3 and GPT-4.
 
-Please note that Hedgehog has some limitations. It can only provide information that is available in its knowledge base, so for up-to-date information, the knowledge base needs to be updated regularly.
+## Scope and Limitations
 
-Here is a sample conversation between the chatbot and a user:
+As mentioned previously, Hedgehog relies on a transformer-based model and a knowledge base of news articles to generate responses to user queries. Its primary focus is on handling financial news inquiries; however, the underlying architecture and design principles can be extended to support other domains in the future.
 
-```
-Hedgehog: Hello, I'm here to answer your questions regarding financial news.
-User: Has Abe decided whether to reappoint Kuroda for another five-year term?
-Hedgehog: No, he hasn't made up his mind.
-User: Is there a possibility that Kuroda will be reappointed?
-Hedgehog: Many analysts see a good chance that Kuroda will be reappointed when the government selects successors to him and his two deputies in coming months, decisions that need parliament's approval.
-```
+The knowledge base is currently limited to a small fixed set of financial news articles dating back to 2018, therefore, the chatbot is not capable of answering questions about recent events.
+
+Other methods of information retrieval, such as keyword-based search exist but are currently not supported by Hedgehog. However, the underlying architecture and design principles can be extended to support other methods of information retrieval in the future.
+
+It's important to note that Hedgehog is not a production-ready chatbot. It is an experimental project and not optimized for performance and is not designed to handle large amounts of traffic.
 
 ## How It Works
 
@@ -65,8 +63,74 @@ Reference Article: Japan's Abe urges central bank's Kuroda to keep up efforts on
 
 Reference Article: Under threat: Cyber security startups fall on harder times
 1. What was David Cowan's comment regarding the cyber security startups in 2018?
-2. What are some of the challenges the cyber security startups face?
+2. What are some of the challenges that cyber security startups face?
 3. How much did cyber security startup ForeScout raise in an IPO in October?
+
+Reference Article: Race car driver Tucker gets more than 16 years for lending scheme
+1. What happened to race car driver Scott Tucker in 2018?
+2. What crime did he commit?
+3. Who else was convicted along with Tucker?
+4. Where has Tucker competed in the past as a race car driver?
+
+Reference Article: Amazon's latest patents are focused on video, augmented reality and the connected home
+1. What are the three main areas Amazon is focusing on in its recent patent activity, according to MCAM analysis?
+2. What is the purpose of Amazon's augmented reality mirror patent?
+3. How did early cloud computing patents help Amazon in the market?
+4. What privacy feature is offered in Amazon's Echo devices patent for video conferencing?
+
+## Sample Conversations
+
+Here are some sample conversations with the chatbot based on the sample questions above:
+
+Reference Article: Japan's Abe urges central bank's Kuroda to keep up efforts on economy
+```
+Hedgehog: Hello, I'm here to answer your questions regarding financial news.
+User: Has Abe decided whether to reappoint Kuroda for another five-year term?
+Hedgehog: No, he hasn't made up his mind.
+User: Is there a possibility that Kuroda will be reappointed?
+Hedgehog: Many analysts see a good chance that Kuroda will be reappointed when the government selects successors to him and his two deputies in coming months, decisions that need parliament's approval.
+User: What was the goal of the massive stimulus program launched by Kuroda in 2013?
+Hedgehog: Boost growth but failed to drive up inflation to the bank's target of 2 percent.
+User: What factors do the Japanese government consider when determining whether the economy is out of deflation?
+Hedgehog: The government looks at several factors, such as inflation data and the output gap, in determining whether the economy is sustainably out of deflation.
+```
+
+Reference Article: Under threat: Cyber security startups fall on harder times
+```
+Hedgehog: Hello, I'm here to answer your questions regarding financial news.
+User: What was David Cowan's comment regarding the cyber security startups in 2018?
+Hedgehog: “I have never seen such a fast-growing market with so many companies on the losing side,” said David Cowan, a partner at Bessemer Venture Partners, a venture capital firm that has invested in the cyber security sector.
+User: What are some of the challenges that cyber security startups face?
+Hedgehog: The result is a number of these start-ups have become corporate “zombies” with little prospect of fetching a good price in an initial public offering (IPO) or becoming acquisition targets, experts said.
+User: How much did cyber security startup ForeScout raise in an IPO in October?
+Hedgehog: $116 million in an IPO in October that valued the company at about $800 million,
+```
+
+Reference Article: Race car driver Tucker gets more than 16 years for lending scheme
+```
+Hedgehog: Hello, I'm here to answer your questions regarding financial news.
+User: What happened to race car driver Scott Tucker in 2018?
+Hedgehog: He was sentenced by U.S. District Judge Kevin Castel in Manhattan.
+User: What crime did he commit?
+Hedgehog: violating federal truth in lending and racketeering laws.
+User: Who else was convicted along with Tucker?
+Hedgehog: Timothy Muir, 46, a lawyer who worked with Tucker and was convicted of the same charges in October, to seven years in prison.
+User: Where has Tucker competed in the past as a race car driver?
+Hedgehog: U.S. and European racing circuits,
+```
+
+Reference Article: Amazon's latest patents are focused on video, augmented reality and the connected home
+```
+Hedgehog: Hello, I'm here to answer your questions regarding financial news.
+User: What are the three main areas Amazon is focusing on in its recent patent activity, according to MCAM analysis?
+Hedgehog: Video, augmented reality and the connected home.
+User: What is the purpose of Amazon's augmented reality mirror patent?
+Hedgehog: It allows users to try on virtual clothes in a virtual setting, using a system of cameras, mirrors, projectors and lights to project different backgrounds and clothes onto the user.
+User: How did early cloud computing patents help Amazon in the market?
+Hedgehog: Amazon was getting patents issued relating to advanced cloud management and deployment.
+User: What privacy feature is offered in Amazon's Echo devices patent for video conferencing?
+Hedgehog: The technology allows users to use video conferencing on their Echo and mute it by blurring or pixelating the video for user privacy.
+```
 
 ## References
 
