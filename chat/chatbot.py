@@ -81,6 +81,7 @@ class Chatbot:
             query = self._form_query()
             token_length = len(self.tokenizer.encode(query))
 
+        print("query:", query)
         input_ids = self.tokenizer(query, return_tensors="pt", truncation=True).input_ids
         outputs = self.model.generate(
             input_ids, max_length=512, min_length=8, top_p=TOP_P, do_sample=DO_SAMPLE
@@ -123,6 +124,7 @@ class Chatbot:
             filtered_results = [
                 result for result in results_with_scores if result[1] < SIMILARITY_THRESHOLD
             ]
+            print(filtered_results)
             similar_results_size = len(filtered_results)
 
             if similar_results_size > 0:

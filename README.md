@@ -20,7 +20,28 @@ It's important to note that Hedgehog is not a production-ready chatbot. It is an
 
 Hedgehog uses a two-step process to answer user questions: retrieving relevant news articles and generating a response based on the retrieved information.
 
-Retrieving Relevant News Articles: When a user submits a question, the chatbot first needs to find relevant news articles that may contain the answer. To achieve this, Hedgehog leverages the sentence-transformers/all-MiniLM-L6-v2 model to compute embeddings for both the user's question and the available news articles. Then, it calculates the similarity between the question and each article's embeddings. The chatbot selects the most relevant articles based on the similarity scores.
+### Retrieving Relevant News Articles
+
+When a user submits a question, the chatbot first needs to find relevant news articles that may contain the answer. To achieve this, Hedgehog leverages a technique called semantic search. Semantic search is a method of information retrieval that uses a similarity metric to find documents that are semantically similar to a given query. In this case, the query is the user's question and the documents are the news articles.
+
+In order to compare the similarity between the user's question and the news articles, Hedgehog needs a way to represent the semantic meaning of the question and the news articles. To do this, Hedgehog uses a sentence embedding model to compute a dense vector representation of the question and the news articles. The sentence embedding model used in this **project** is the sentence-transformers/all-MiniLM-L6-v2 model [2]. This model is a transformer-based model that can be used to compute sentence embeddings, mapping sentences and paragraphs to a 384 dimensional dense vector space Sentences with similar meanings should have similar embeddings.
+
+In this project, Hedgehog uses the library FAISS to compute the similarity between the question's embedding and the embeddings of the news articles. FAISS is a library for efficient similarity search and clustering of dense vectors [3]. It is capable of performing similarity search on large datasets with high performance. FAISS provides many index types that can be used to compute the similarity between two embeddings. Since we are using a wrapper library called Langchain to interface with FAISS, we are limited to the default index type that is used by Langchain - IndexFlatL2 [6]. IndexFlatL2 is a brute-force search index that computes the L2 distance between two embeddings [4]. The L2 distance is the Euclidean distance between two embeddings [5]. The smaller the distance, the more similar the embeddings are.
+
+To compute similarity between embeddings, we need to generate and store them in a FAISS index. However, news articles are usually lengthy, so we need to split them into smaller parts before generating embeddings. As the paragraphs in each of the article are already separated by newlines, we use the newlines to split the articles into chunks. We add the title at the beginning of each of the chunk to maintain context.  Although some paragraphs may exceed the maximum sequence length of the sentence embedding model, resulting in truncated text and loss of context, we accepted this limitation for our project. In the future, other methods of splitting the articles into smaller chunks may be explored, such as using overlaps between the chunks. The maximum sequence length for the sentence embedding model used in this project is 256 word pieces or tokens [2]. Each embedding is stored in the FAISS index along with some metadata.
+
+Every time a user asks a question, Hedgehog first computes the embedding of the question using the same sentence embedding model. It then uses the FAISS index to retrieve the most similar articles to the question's embedding. ...
+
+
+
+<!--
+According to https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2, the maximum sequence length for this model is 256 word pieces or tokens.
+ -->
+
+Then, it calculates the similarity between the question and each article's embeddings. The chatbot selects the most relevant articles based on the similarity scores.
+
+A sentence embedding is a dense vector that represents the semantic meaning of a sentence or paragraph. To compare the similarity between two sentences, we can simply compute
+
 
 Generating a Response: Once the relevant articles are identified, Hedgehog uses the microsoft/GODEL-v1_1-large-seq2seq model to generate a response. This model is an encoder-decoder architecture specifically designed to ground responses in external information. The chatbot feeds the user's question and the retrieved articles into the model, which then generates an answer based on the provided context.
 
@@ -138,7 +159,17 @@ User: What privacy feature is offered in Amazon's Echo devices patent for video 
 Hedgehog: The technology allows users to use video conferencing on their Echo and mute it by blurring or pixelating the video for user privacy.
 ```
 
+<!-- Possible new article: Philippine lawmakers to press for inquiry into deadly mall fire -->
+How many people died in a shopping mall fire in the Philippines in the city of Davao last 2018?
+38 people died in the fire, which injured six people, although about 100 call center employees survived.
+Which call center company was affected in the fire?
+Research Now SSI, on the fourth floor of the same building in choking smoke.
+
 ## References
 
 [1] https://huggingface.co/microsoft/GODEL-v1_1-large-seq2seq
 [2] https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+[3] https://github.com/facebookresearch/faiss/wiki
+[4] https://github.com/facebookresearch/faiss/wiki/Faiss-indexes
+[5] https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances
+[6] https://python.langchain.com/en/latest/_modules/langchain/vectorstores/faiss.html

@@ -2,8 +2,8 @@
     "editor.rulers": [
         100
     ],
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
+    // "editor.formatOnSave": true,
+    "python.formatting.provider": "none",
     "python.formatting.blackArgs": [
         "--line-length",
         "100"
@@ -19,4 +19,7 @@
         "pretrained",
         "vectorstores"
     ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
 }

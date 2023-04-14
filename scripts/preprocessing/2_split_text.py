@@ -4,12 +4,9 @@ from tqdm import tqdm
 
 import pandas as pd
 from transformers import AutoTokenizer
-from langchain.text_splitter import (
-    CharacterTextSplitter,
-)
+from langchain.text_splitter import CharacterTextSplitter
 
-
-MODEL_PATH = "models/microsoft/GODEL-v1_1-large-seq2seq"
+MODEL_PATH = "models/sentence-transformers/all-MiniLM-L6-v2"
 CLEANED_JSON_DATA_PATH = "data/processed/cleaned_json"
 SQLITE_DB_DIR = "data/processed/sqlite_db"
 SQLITE_DB_NAME = "articles.db"
@@ -32,8 +29,7 @@ def prepare_sqlite_db(db_path, db_name):
         CREATE TABLE articles (
             id integer PRIMARY KEY AUTOINCREMENT,
             published datetime,
-            title text,
-            text text
+            title text
         );
         """
     )
@@ -64,8 +60,8 @@ for file in tqdm(os.listdir(CLEANED_JSON_DATA_PATH)):
         for index, row in df.iterrows():
             c = sqlite3_conn.cursor()
             c.execute(
-                "INSERT INTO articles (published, title, text) VALUES (?, ?, ?)",
-                (row["published"], row["title"], row["text"]),
+                "INSERT INTO articles (published, title) VALUES (?, ?)",
+                (row["published"], row["title"]),
             )
             article_id = c.lastrowid
 

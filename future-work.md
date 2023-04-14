@@ -1,0 +1,2 @@
+- Other similarity metrics can be used to compute the similarity between two embeddings such as cosine similarity
+- maybe overlap for text that were greater than 256 when splitting text, and perform special handling for text with overlap when doing semantic search and synthesis of query
