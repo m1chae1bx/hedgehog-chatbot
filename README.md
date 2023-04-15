@@ -30,7 +30,7 @@ In this project, Hedgehog uses the library FAISS to compute the similarity betwe
 
 To compute similarity between embeddings, we need to generate and store them in a FAISS index. However, news articles are usually lengthy, so we need to split them into smaller parts before generating embeddings. As the paragraphs in each of the article are already separated by newlines, we use the newlines to split the articles into chunks. We add the title at the beginning of each of the chunk to maintain context.  Although some paragraphs may exceed the maximum sequence length of the sentence embedding model, resulting in truncated text and loss of context, we accepted this limitation for our project. In the future, other methods of splitting the articles into smaller chunks may be explored, such as using overlaps between the chunks. The maximum sequence length for the sentence embedding model used in this project is 256 word pieces or tokens [2]. Each embedding is stored in the FAISS index along with some metadata.
 
-Every time a user asks a question, Hedgehog first computes the embedding of the question using the same sentence embedding model. It then uses the FAISS index to retrieve the most similar articles to the question's embedding. ...
+Every time a user asks a question, Hedgehog first computes the embedding of the question using the same sentence embedding model. It then uses the FAISS index to retrieve the most similar articles to the question's embedding. The top ? chunks based on the default similarity search metric used by the Langchain wrapper for FAISS are returned. Afterwards, using max marginal relevance, duplicate chunks are filtered out. From the filtered results, the top ? are added to the chatbot's current knowledge list.
 
 
 
