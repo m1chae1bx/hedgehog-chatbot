@@ -13,16 +13,10 @@ SENTENCE_EMBEDDING_MODEL_PATH = "models/sentence-transformers/all-MiniLM-L6-v2"
 SQLITE_DB_PATH = "data/processed/sqlite_db/articles.db"
 
 # Instruction string for the chatbot model.
-INSTRUCTION = (
-    "Instruction: Given a dialog context and related news articles, you need to response based "
-    f"on the articles. Today is {datetime.now().date()}."
-)
+INSTRUCTION = "Instruction: given a dialog context and related knowledge, you need to response safely based on the knowledge."
 
 # Starting dialog for the chatbot.
 STARTING_DIALOG = "Hello, I'm here to answer your questions regarding financial news."
-
-# Similarity threshold used for filtering similar documents.
-SIMILARITY_THRESHOLD = 0.9
 
 # Number of top similar documents to consider during the search.
 SIMILARITY_SEARCH_K = 7
@@ -39,3 +33,6 @@ TOP_P = 0.9
 
 # Boolean flag to control sampling in model's response.
 DO_SAMPLE = False
+
+# Maximum length of the generated response.
+MAX_LENGTH = 512

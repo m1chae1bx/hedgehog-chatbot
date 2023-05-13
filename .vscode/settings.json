@@ -13,8 +13,11 @@
         "--max-line-length=100"
     ],
     "cSpell.words": [
+        "Abenomics",
+        "davinci",
         "docstore",
         "FAISS",
+        "Haruhiko",
         "langchain",
         "pretrained",
         "vectorstores"
