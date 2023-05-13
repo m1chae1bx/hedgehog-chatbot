@@ -1,6 +1,5 @@
 import os
 import logging
-from typing import List, Tuple
 
 from transformers import AutoTokenizer, TFAutoModelForSeq2SeqLM
 
@@ -9,17 +8,16 @@ from config import (
     DOCSTORE_PATH,
     SENTENCE_EMBEDDING_MODEL_PATH,
     INSTRUCTION,
-    SIMILARITY_THRESHOLD,
     SIMILARITY_SEARCH_K,
     TOP_K,
     TOKEN_LIMIT,
     TOP_P,
     DO_SAMPLE,
+    MAX_LENGTH,
 )
 from database import sqlite_connection, fetch_article, fetch_article_split_text
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.docstore.document import Document
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
@@ -56,6 +54,7 @@ class Chatbot:
             str: The generated response.
         """
         self._add_to_dialog(user_input)
+
         self._get_knowledge(user_input)
         response = self._generate_response()
 
@@ -83,7 +82,7 @@ class Chatbot:
 
         input_ids = self.tokenizer(query, return_tensors="pt", truncation=True).input_ids
         outputs = self.model.generate(
-            input_ids, max_length=512, min_length=8, top_p=TOP_P, do_sample=DO_SAMPLE
+            input_ids, max_length=MAX_LENGTH, min_length=8, top_p=TOP_P, do_sample=DO_SAMPLE
         )
         output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return output
@@ -116,35 +115,25 @@ class Chatbot:
         """
         with sqlite_connection() as c:
             print("\nSearching for relevant articles...")
+            mmr_results = self.docstore.max_marginal_relevance_search(
+                user_input, k=TOP_K, fetch_k=SIMILARITY_SEARCH_K
+            )
+            for document in mmr_results:
+                article_id = document.metadata["article_id"]
+                position = document.metadata["position"]
 
-            results_with_scores: List[
-                Tuple[Document, float]
-            ] = self.docstore.similarity_search_with_score(user_input, k=SIMILARITY_SEARCH_K)
-            filtered_results = [
-                result for result in results_with_scores if result[1] < SIMILARITY_THRESHOLD
-            ]
-            similar_results_size = len(filtered_results)
+                existing_item = None
+                for item in self.knowledge:
+                    if item[0] == article_id and item[1] == position:
+                        existing_item = item
+                        break
 
-            if similar_results_size > 0:
-                mmr_results = self.docstore.max_marginal_relevance_search(
-                    user_input, k=TOP_K, fetch_k=similar_results_size
-                )
-                for document in mmr_results:
-                    article_id = document.metadata["article_id"]
-                    position = document.metadata["position"]
+                if existing_item:
+                    self.knowledge.remove(existing_item)
 
-                    existing_item = None
-                    for item in self.knowledge:
-                        if item[0] == article_id and item[1] == position:
-                            existing_item = item
-                            break
-
-                    if existing_item:
-                        self.knowledge.remove(existing_item)
-
-                    text = fetch_article_split_text(article_id, position, c)
-                    knowledge_item = (article_id, position, text)
-                    self.knowledge.append(knowledge_item)
+                text = fetch_article_split_text(article_id, position, c)
+                knowledge_item = (article_id, position, text)
+                self.knowledge.append(knowledge_item)
 
     def _synthesize_knowledge(self) -> str:
         """
@@ -173,11 +162,10 @@ class Chatbot:
             for article_id in article_ids:
                 title, date_published = fetch_article(article_id, c)
 
-                synthesized_knowledge += f"\nTitle: {title}"
-                synthesized_knowledge += f"\nDate published: {date_published}\n"
+                synthesized_knowledge += f"Title: {title}. "
 
                 for _, text in articles[article_id]:
-                    synthesized_knowledge += f"{text}\n"
+                    synthesized_knowledge += f"{text} "
 
             return synthesized_knowledge
 

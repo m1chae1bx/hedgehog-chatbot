@@ -2,8 +2,8 @@
     "editor.rulers": [
         100
     ],
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
+    // "editor.formatOnSave": true,
+    "python.formatting.provider": "none",
     "python.formatting.blackArgs": [
         "--line-length",
         "100"
@@ -13,10 +13,16 @@
         "--max-line-length=100"
     ],
     "cSpell.words": [
+        "Abenomics",
+        "davinci",
         "docstore",
         "FAISS",
+        "Haruhiko",
         "langchain",
         "pretrained",
         "vectorstores"
     ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
 }
