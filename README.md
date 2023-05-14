@@ -69,12 +69,7 @@ Where:
 Here is a sample query to be fed to the model:
 
 ```
-Instruction: Given a dialog context and related news articles, you need to response based on the articles. Today is 2023-04-15. [CONTEXT] Hello, I'm here to answer your questions regarding financial news. EOS Has Abe decided whether to reappoint Kuroda for another five-year term? [KNOWLEDGE]
-Title: Japan's Abe tells Kuroda to keep up efforts on economy
-Date published: 2018-01-07
-Kuroda was handpicked by Abe to take the helm of the central bank in 2013 to deploy a massive stimulus program - part of the premier's "Abenomics" reflationary policies - that helped boost growth but failed to drive up inflation to the bank's target of 2 percent.
-"I want him to keep up his efforts. But I haven't made up my mind," on who should succeed Kuroda when his term ends in April, he added.
-Many analysts see a good chance that Kuroda will be reappointed when the government selects successors to him and his two deputies in coming months, decisions that need parliament's approval.
+Instruction: given a dialog context and related knowledge, you need to response safely based on the knowledge. [CONTEXT] Hello, I'm here to answer your questions regarding financial news. EOS Has Abe decided whether to reappoint Kuroda for another five-year term? [KNOWLEDGE] Title: Japan's Abe tells Kuroda to keep up efforts on economy. Kuroda was handpicked by Abe to take the helm of the central bank in 2013 to deploy a massive stimulus program - part of the premier's "Abenomics" reflationary policies - that helped boost growth but failed to drive up inflation to the bank's target of 2 percent. "I want him to keep up his efforts. But I haven't made up my mind," on who should succeed Kuroda when his term ends in April, he added. Many analysts see a good chance that Kuroda will be reappointed when the government selects successors to him and his two deputies in coming months, decisions that need parliament's approval.
 ```
 
 The model has a maximum input length of 512 tokens, thus, if the query exceeds this limit, the knowledge list will be truncated. This is a limitation of the model due to the limited input size. In the future, it may be possible to use a larger model that can handle longer inputs. Once the response is generated, it is returned to the user, added to the dialog history, and the user can then proceed to ask another question, thus repeating the process.
@@ -117,6 +112,7 @@ You can run the chatbot by running `python chat/main.py` from the root directory
 Below are some sample conversations with the chatbot based on the sample questions above.
 
 Reference Article: Japan's Abe urges central bank's Kuroda to keep up efforts on economy
+
 ```
 Hedgehog: Hello, I'm here to answer your questions regarding financial news.
 User: Has Abe decided whether to reappoint Kuroda for another five-year term?
@@ -175,7 +171,7 @@ An example query sent to GODEL to is shown below:
 Instruction: given a dialog context and related knowledge, you need to response safely based on the knowledge. [CONTEXT] Hello, I'm here to answer your questions regarding financial news. EOS Has Abe decided whether to reappoint Kuroda for another five-year term? [KNOWLEDGE] Title: Japan's Abe tells Kuroda to keep up efforts on economy. Kuroda was handpicked by Abe to take the helm of the central bank in 2013 to deploy a massive stimulus program - part of the premier's "Abenomics" reflationary policies - that helped boost growth but failed to drive up inflation to the bank's target of 2 percent. "I want him to keep up his efforts. But I haven't made up my mind," on who should succeed Kuroda when his term ends in April, he added. Many analysts see a good chance that Kuroda will be reappointed when the government selects successors to him and his two deputies in coming months, decisions that need parliament's approval.
 ```
 
-The same query is sent to the OpenAI gpt-3.5-turbo model like this:
+A similar query is sent to the OpenAI gpt-3.5-turbo model adapted to the inputs required and should look like this:
 
 System:
 ```
@@ -273,6 +269,7 @@ It has been noted that when changing the topic in the same conversation, Hedgeho
 
 Here is an example of a conversation where the topic was changed from the previous conversation about Abe and Kuroda to a topic on cybersecurity startups.
 
+```
 Hedgehog: Hello, I'm here to answer your questions regarding financial news.
 User: Has Abe decided whether to reappoint Kuroda for another five-year term?
 Hedgehog: No, he hasn't made up his mind.
@@ -286,6 +283,7 @@ User: What was David Cowan's comment regarding the cyber security startups in 20
 Hedgehog: “I have never seen such a fast-growing market with so many companies on the losing side,” said David Cowan, a partner at Bessemer Venture Partners, a venture capital firm that has invested in the cyber security sector.
 User: What happened to the security products these startups have developed?
 Hedgehog: CANNOTANSWER:
+```
 
 From the conversation above, it was unable to answer the question about what happened to the security products these startups have developed. Note that Hedgehog was able to answer the question when we started the conversation directly about cybersecurity startups. The following is the query that was fed to the LLM model to answer the question "What happened to the security products these startups have developed?".
 
