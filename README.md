@@ -4,7 +4,7 @@ Hedgehog is a chatbot focused on answering questions about financial news. It us
 
 ## Motivation
 
-Hedgehog is an experimental project aimed at evaluating the effectiveness of augmenting a semantic search-based information retrieval system with a smaller transformer model fine-tuned for answering user queries. The experiment aims to evaluate if this combination can create a decent information retrieval chatbot despite the reduced size of the transformer model compared to bleeding-edge large language transformer models like GPT-3 and GPT-4.
+Hedgehog is an experimental project aimed at evaluating the effectiveness of augmenting a semantic search-based information retrieval system with a smaller transformer model pre-trained for answering user queries. The experiment aims to evaluate if this combination can create a decent information retrieval chatbot despite the reduced size of the transformer model compared to bleeding-edge large language transformer models like GPT-3 and GPT-4.
 
 Disclaimer:
 
